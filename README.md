@@ -13,7 +13,7 @@
 
 Rails is an **MVC framework** for Ruby.
 
-That means 
+That means it performs a lot of the same functionality as Express: It provides a way for a database to tak to the browser, and controls what happens in the middle.
 
 # Convention over configuration
 
