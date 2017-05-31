@@ -219,23 +219,26 @@ So in the end we're gonna be building something like the first express birds app
 Let's try to visit a new page in our app. Type `localhost:3000/welcome` into your browser's url bar. What error do you see?
 
 In Rails, we need to define the routes of our application in our routes file. Edit you `config/routes.rb` file to look like this:
+
 ```ruby
 Rails.application.routes.draw do
-  get '/welcome', to: 'welcome#index'
+  get "/welcome", to: "welcome#index"
 end
 ```
 
-This tells our Rails app that we are defining a GET route named `/welcome`. If we go to terminal and type
+This tells our Rails app that we are defining a GET route named `/welcome`. If we go to terminal and type:
+
 ```
 rails routes
 ```
-we will see a list of all of the routes that are defined in our `config/routes.rb` file.
+
+...we will see a list of all of the routes that are defined in our `config/routes.rb` file.
 
 Now go back to the browser and refresh the page. You should see a different error. This error is telling us that we do not have a `WelcomeController` class definied in our app.
 
-This is coming from the second arguement we provide to the `get` method in our routes file. The first arguement is the name of the route (`/welcome`) and the second arguement (`to: 'welcome#index'`) is indicating **where** we want requests that are sent to that route to go. In Rails, the router does not do anything with the requests, it only passes them to the controllers. The controllers then handle the requests and sends the responses back to the client.
+This is coming from the second argument we provide to the `get` method in our routes file. The first argument is the name of the route (`/welcome`) and the second argument (`to: 'welcome#index'`) is indicating **where** we want requests that are sent to that route to go. In Rails, the router does not do anything with the requests, it only passes them to the controllers. The controllers then handle the requests and send the responses back to the client.
 
-# Controllers
+## Controllers
 
 The controllers in a Rails application handle the requests and send responses. Controllers consist of `actions` - public instance methods that are called by the framework when a request comes in matching the actions route.
 
@@ -243,24 +246,66 @@ In our app, we have stated that requests to the **GET** `/welcome` route should 
 
 - Add a file called `welcome_controller.rb` to you `app/controllers` directory.
 - Edit your `welcome_controller.rb` file to look like this:
+
 ```ruby
 class WelcomeController < ApplicationController
   def index
-    render text: 'Welcome!'
+    # says we want to send back plain text
+    render plain: "Welcome!"
   end
 end
 ```
 
-Now when your refresh the page you should see the `Welcome!' text.
+Now when your refresh the page you should see the `Welcome!` text.
 
 ### More actions
 
-1. Let's add a **GET** `/about` route and send it to the `WelcomeController#about` action. Your `about` action should render some text about yourself.
-2. Add a **GET** `/people/:id` route to your routes file and add the corresponding controller action to your WelcomeController. This action should render some text with the `username` inserted. For example, if I visit **GET** `/people/1` I should recieve some text like "Person 1 loves Rails!". Hint: you're going to have to get the id from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters).
+We have a `get` route in our app that works super well! But if we're trying to build a CRUD app, we need to do more, right? 
 
-## Views
+- How might we declare other HTTP verbs in our routes?
+- Compare the routes we've made so far to your garden variety Express router. How does it differ? How is it the same?
 
-This is pretty cool but what if we want to renderr more than just text?
+```js
+quoteRoutes.get('/', quotesController.index);
+quoteRoutes.get('/edit/:id', quotesController.edit);
+quoteRoutes.get('/:id', quotesController.show);
+quoteRoutes.post('/', quotesController.create);
+quoteRoutes.put('/:id', quotesController.update);
+quoteRoutes.delete('/:id', quotesController.destroy);
+```
+
+### `resources :thing`
+
+Rails also allows us to write these routes with just one line.
+
+Add this to `config/routes.rb`:
+
+```rb
+resources :dinos
+```
+
+Then run `rails routes` again. What do you notice?
+
+## 🚀 LAB 2: More controllers!
+
+For this lab, we're going to catch up on the dinos app and add a couple more routes.
+
+So far, your dino app should have:
+- A `welcome` route that displays the text `hello world`
+- A `welcome_controller.rb` file
+- Dino resources
+
+For this lab, you will:
+- Create a dino controller
+- When we hit the `/dinos` endpoint, send back the text "dinosaurs are cool"
+- When we hit the `/dinos/:dinosaur` endpoint, send back the text "[dinosaur] is cool"
+- Hint: You're going to have to get the dino from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters)
+
+For this lecture, we're only concerned about the `/dinos` and `/dinos/:dinosaur` endpoints ... those are going to be the methods `index` and `show`. We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
+
+# Views!!!!!!
+
+This is pretty cool but what if we want to render more than just text?
 
 - First we'll start with the `index` action in our WelcomeController. Remove the render line (your index method will be empty).
 - Visit `localhost:3000/welcome` in your browser. What error do you see?
@@ -270,54 +315,54 @@ This is pretty cool but what if we want to renderr more than just text?
 ```
 - Now refresh your browser.
 
-> WTF?! I didn't render anything in my controller action! How did that work?
+#### WTF?! I didn't render anything in my controller action! How did that work?
 
-Another prime example of 'convention over configuration'! We have a WelcomController with an `index` action defined in `app/controllers`. We have a `app/views/welcome/` directory. In there we have an `index.html.erb`. This is how rails likes things.
+Another prime example of 'convention over configuration'! We have a WelcomeController with an `index` action defined in `app/controllers`. We have a `app/views/welcome/` directory. In there we have an `index.html.erb`. This is how Rails likes things.
 
 If you don't call render in your controller action, it will call it for you automagically. It doesn't need you to tell it where the view template is if you put it where it expects and name it after your controller action. It just works.
 
 Of course, if you wanted to render a different template, you could do it explicitly in your controller action. ie:
+
 ```ruby
 def index
   render :something_else
 end
 ```
-will render the `app/views/welcome/something_else.html.erb` template.
 
-> Why don't we have to include and html boilderplate in our templates?
+would render the `app/views/welcome/something_else.html.erb` template.
+
+#### Why don't we have to include an html boilerplate in our templates?
 
 Good question! Rails renders your templates in `layouts`. Checkout `app/views/layouts/application.html.erb`. If you add something here, it will be rendered on every page. The templates themselves are rendered through the `yield` in the body tag.
 
-### More views
+### Side note!!!
 
-Add the remaining views for the `about` and `people` controller actions. To make the `name` available, you are going to have to set it to an instance variable in your controller action. Then in your template, you will have access to that instance variable. Good news! The default template compiler for Rails applications, ERB, has the **exact same syntax** as EJS (yes, we did that on purpose).
+You don't have to render ERB templates in your routes! You can send back json data.
 
-# Route Helpers
+In the index method of `welcome_controller.rb`, add this line:
+
+```rb
+render json: { hello: "world" }
+```
+
+Cool, right? Sort of like `res.json`.
+
+### Route Helpers
 
 Another godly thing about Rails is that it provides your with url helper methods so that you don't have to remember every every route in your app. Add the following line to your `app/views/welcome/index.html.erb` template:
 
 ```html
-<%= link_to 'About', about_path %>
+<%= link_to 'Dinosaurs', dinosaur_path %>
 ```
 There are two magics going on here -
 1. `link_to` is a method available in Rails views that create anchor tags. The first argument is the text that will be displayed in the link. The second is the href for the link.
-2. `about_path` is a url helper method that returns the about path, or rather, the path that will resolve to the about route defined in our routes controller.
+2. `dinosaur_path` is a url helper method that returns the about path, or rather, the path that will resolve to the about route defined in our routes controller.
 
-Try adding a link to the `people` action in our WelcomeController. Notice that this route has a name in it. If you have a route with a variable value in it, you can pass that value as an arguement into the url helper method for that route.
+## 🚀 LET'S DO TOGETHER: The Return of the Clowns
 
-# j notes
+Add the remaining views for the `dinos` controller actions. To make the `dinosaur` available, you are going to have to set it to an instance variable in your controller action.
 
-- what is rails?
-    - talk about mvc framework again -- compare to express
-    - whiteboard the MVC pattern on the board again
-    - talk about how it's comparable to -- the same basic parts
-    - ruby, as we discussed, is a fully server-side language -- you'd never do any kind of front end manipulation in ruby
-- convention vs configuration
-    - express is largely about **configuration** -- you have to write your own `app.js`, you can set up your routes any way you want, etc.
-    - rails is much more based on **convention**
-- file structure exploration
-    - do `rails new test_app -G` (talk a little bit here about what exactly `rails new` does... it creates a new rails app and also initializes a git repository)
-    - talk through the file structure -- which files will we edit? which ones will we almost never touch?
-- build a very simple rails app
-    - something that just goes through and says "dinosaurs"!
-    - talk about ERB a little bit
+Then in your template, you will have access to that instance variable. Good news! The default template compiler for Rails applications, ERB, has the **exact same syntax** as EJS (yes, we did that on purpose).
+
+
+
