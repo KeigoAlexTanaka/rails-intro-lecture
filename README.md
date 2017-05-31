@@ -352,11 +352,11 @@ Cool, right? Sort of like `res.json`.
 Another godly thing about Rails is that it provides your with url helper methods so that you don't have to remember every every route in your app. Add the following line to your `app/views/welcome/index.html.erb` template:
 
 ```html
-<%= link_to 'Dinosaurs', dinosaur_path %>
+<%= link_to "Dinosaurs", dinos_path %>
 ```
 There are two magics going on here -
 1. `link_to` is a method available in Rails views that create anchor tags. The first argument is the text that will be displayed in the link. The second is the href for the link.
-2. `dinosaur_path` is a url helper method that returns the about path, or rather, the path that will resolve to the about route defined in our routes controller.
+2. `dinos_path` is a url helper method that returns the about path, or rather, the path that will resolve to the dinosaur route defined in our routes controller.
 
 ## 🚀 LET'S DO TOGETHER: The Return of the Clowns
 
