@@ -208,10 +208,6 @@ That looks much more manageable, doesn't it?
 
 (This doesn't mean you can delete all the extras, of course. You know that. I just wanted to make sure.)
 
-## 🚀 LAB!
-
-For the second part of the lecture, we're going to be making an app about dinosaurs. So, let's get everyone set up with a brand new shiny rails app. Run `rails new dinos -G`. Then, explore the file structure a little bit. See what's going on. Cool? Cool.
-
 # Let's talk about the (M)VC!
 
 So in the end we're gonna be building something like the first express birds app.
@@ -286,7 +282,7 @@ resources :dinos
 
 Then run `rails routes` again. What do you notice?
 
-## 🚀 LAB 2: More controllers!
+## 🚀 LAB: More controllers!
 
 For this lab, we're going to catch up on the dinos app and add a couple more routes.
 
@@ -347,6 +343,12 @@ render json: { hello: "world" }
 
 Cool, right? Sort of like `res.json`.
 
+## 🚀 LET'S DO TOGETHER: The Return of the Clowns
+
+Add the remaining views for the `dinos` controller actions. To make the `dinosaur` available, you are going to have to set it to an instance variable in your controller action.
+
+Then in your template, you will have access to that instance variable. Good news! The default template compiler for Rails applications, ERB, has the **exact same syntax** as EJS (yes, we did that on purpose).
+
 ### Route Helpers
 
 Another godly thing about Rails is that it provides your with url helper methods so that you don't have to remember every every route in your app. Add the following line to your `app/views/welcome/index.html.erb` template:
@@ -357,12 +359,6 @@ Another godly thing about Rails is that it provides your with url helper methods
 There are two magics going on here -
 1. `link_to` is a method available in Rails views that create anchor tags. The first argument is the text that will be displayed in the link. The second is the href for the link.
 2. `dinos_path` is a url helper method that returns the about path, or rather, the path that will resolve to the dinosaur route defined in our routes controller.
-
-## 🚀 LET'S DO TOGETHER: The Return of the Clowns
-
-Add the remaining views for the `dinos` controller actions. To make the `dinosaur` available, you are going to have to set it to an instance variable in your controller action.
-
-Then in your template, you will have access to that instance variable. Good news! The default template compiler for Rails applications, ERB, has the **exact same syntax** as EJS (yes, we did that on purpose).
 
 
 
