@@ -282,22 +282,30 @@ resources :dinos
 
 Then run `rails routes` again. What do you notice?
 
-## 🚀 LAB: More controllers!
+## 🚀 LET'S DO TOGETHER: More controllers!
 
-For this lab, we're going to catch up on the dinos app and add a couple more routes.
+For this code-together, we're going to add another controller.
 
-So far, your dino app should have:
+So far, our dino app has:
 - A `welcome` route that displays the text `hello world`
 - A `welcome_controller.rb` file
 - Dino resources
 
-For this lab, you will:
+Together, we'll
 - Create a dino controller
 - When we hit the `/dinos` endpoint, send back the text "dinosaurs are cool"
 - When we hit the `/dinos/:dinosaur` endpoint, send back the text "[dinosaur] is cool"
-- Hint: You're going to have to get the dino from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters)
+- Hint: We're going to have to get the dino from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters)
 
-For this lecture, we're only concerned about the `/dinos` and `/dinos/:dinosaur` endpoints ... those are going to be the methods `index` and `show`. We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
+For this lecture, we're only concerned about the `/dinos` and `/dinos/:dinosaur` endpoints ... those are going to be the methods `index` and `show`. 
+
+We can set this up in our route by saying:
+
+```rb
+resources :dinos, only: [:index, :show]
+```
+
+We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
 
 # Views!!!!!!
 
