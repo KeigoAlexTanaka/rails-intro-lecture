@@ -74,7 +74,10 @@ our Rails server will start up and we can visit our rails app at localhost:3000.
 If your Rails app is broken change, got to your Gemfile and change 
 ```
 gem 'sqlite3'
-``` to ```
+``` 
+to 
+
+```
 gem 'sqlite3', '~> 1.3.6'
 ```
 
@@ -222,14 +225,10 @@ That looks much more manageable, doesn't it?
 
 ## Intro - Routing in Rails (20 mins)
 
-In this lesson, we are going to talk about "routing" with a focus around the MVC pattern.
-
 As a reminder, MVC is a pattern defining a web app in three parts:
 * The (M)odels, holding all the business logic
 * The (V)iews, rendering the database content as a readable format
 * The (C)ontrollers, linking views and models
-
-
 
 ```
 
@@ -245,8 +244,6 @@ As a reminder, MVC is a pattern defining a web app in three parts:
 ```
 
 When a user makes a request to the browser, the web-application needs to know what content to show them.
-
-So in the end we're gonna be building something like the first express birds app.
 
 Let's try to visit a new page in our app. Type `localhost:3000/welcome` into your browser's url bar. What error do you see?
 
