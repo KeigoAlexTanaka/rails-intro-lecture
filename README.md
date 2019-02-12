@@ -71,6 +71,12 @@ rails server
 ```
 our Rails server will start up and we can visit our rails app at localhost:3000. Check out all those happy people! We're already doing a website.
 
+If your Rails app is broken change, got to your Gemfile and change ```gem 'sqlite3'```
+to ```gem 'sqlite3', '~> 1.3.6'```
+
+This is an adapter for sqlite3.
+
+Now run ```bundle install``` and restart your Rails server
 
 ### What are all those files???!?!?!?
 
