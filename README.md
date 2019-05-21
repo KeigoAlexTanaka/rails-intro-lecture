@@ -71,23 +71,6 @@ The [Getting Started Guide](http://guides.rubyonrails.org/getting_started.html) 
 
 # Our first Rails app
 
-### Get the latest version of rails
-
-Before we create our first Rails app, we are going to make sure that we have the latest version of the Rails gem. Run:
-
-```
-gem update rails
-```
-You might have to use sudo:
-```
-sudo gem update rails
-```
-If you don't have Rails already installed, run:
-```
-gem install rails
-```
-and you will get the latest automatically.
-
 ### Generating an application
 
 To generate a Rails application, use the `rails` command and pass it the `new` argument and the name of the application you want to generate: `my_rails_app`. This sets us up with our skeleton Rails app. There are a lot of options that you can provide with the `rails new` command. Try `rails new --help` to take a look at them all.
@@ -113,11 +96,17 @@ Puma starting in single mode...
 Use Ctrl-C to stop
 
 ```
+At the end of process, Rails runs bundle install. That means Rails has is telling bundler to install all of the gems it will need to run the project.
+
 The Rails server will start up and we can visit the application welcome page at `localhost:3000`. You should now see the _Yay! You're on Rails!_ page. Check out all those happy people!
 
-![](https://edgeguides.rubyonrails.org/images/getting_started/rails_welcome.png)
+![rails landing page](https://edgeguides.rubyonrails.org/images/getting_started/rails_welcome.png)
 
-Now run ```bundle install``` and restart your Rails server.
+#### Side Note: What is Bundler?
+
+Bundler is like NPM. Gems are like node packages from NPM. Any gem you want to use in your project must be listed in your Gemfile (which is like the package.json file that NPM used). You have to run bundle install anytime you change your Gemfile. Your rails server needs to be restarted after any changes to your Gemfile.
+
+Bundler looks at the Gemfile and downloads all of the listed gems in addition to each's dependencies. It then generates a manifest file that is stored in Gemfile.lock. **Never** edit Gemfile.lock!
 
 ### Rails File Structure
 
@@ -255,8 +244,6 @@ That looks much more manageable, doesn't it?
 
 ## Routing in Rails (20 mins)
 
-The router is the doorman of your application.
-
 The Router is basically just a matching service. It looks at the HTTP verb (GET, POST, PUT, DELETE) and the URL that is being requested and matches it with the appropriate controller action to run. If it can't find the route, it will throw an error.
 
 As a reminder, MVC is a pattern defining a web app in three parts:
@@ -300,11 +287,9 @@ we will see a list of all of the routes that are defined in our `config/routes.r
 |:------------ |:------------ |:------------------|:------------------ |
 | welcome      | GET          | /welcome(.:format)| welcome#index
 
-Now go back to the browser and refresh the page. You should see a different error. This error is telling us that we do not have a `WelcomeController` class definied in our app.
+Now go back to the browser and refresh the page. You should see a different error. 
 
-```
-Routing Error: uninitialized constant WelcomeController
-```
+If you did the last step correctly, you should see an error message: *uninitialized constant WelcomeController*. This means that we need to create a controller with the name welcome as that is where we told our route to go in the first place.
 
 This is coming from the second argument we provide to the `get` method in our routes file. The first argument is the name of the route (`/welcome`) and the second argument (`to: 'welcome#index'`) is indicating **where** we want requests that are sent to that route to go. In Rails, the router does not do anything with the requests, it only passes them to the controllers. The controllers then handle the requests and send the responses back to the client.
 
@@ -312,7 +297,14 @@ This is coming from the second argument we provide to the `get` method in our ro
 
 The controllers in a Rails application handle the requests and send responses. Controllers consist of `actions` - public instance methods that are called by the framework when a request comes in matching the actions route.
 
-In our app, we have stated that requests to the **GET** `/welcome` route should be handled by the WelcomeController, specifically the `index` action within the WelcomeController. So let's create one!
+In our app, we have stated that requests to the **GET** `/welcome` route should be handled by the WelcomeController, specifically the `index` action within the WelcomeController. So let's create a controller: 
+
+- In Terminal, run:
+
+```
+$ rails generate controller welcome
+```
+Reload the page again and find a different error message: *The action 'index' could not be found for WelcomeController*. We have created the welcome controller correctly, but there is no index method defined. Let's make one:
 
 - Add a file called `welcome_controller.rb` to the `app/controllers` directory.
 - Edit your `welcome_controller.rb` file to look like this:
@@ -325,8 +317,16 @@ class WelcomeController < ApplicationController
   end
 end
 ```
+Now when you refresh the page, you should see the `Welcome to Unit 4, Jeopardy!` text. However, if you comment out that text, what do you see?
 
-Now when your refresh the page you should see the `Welcome to Unit 4, Jeopardy!` text.
+Another error! *Missing template welcome/index...* Since we have a welcome controller and an index method, Rails automatically will try to render a view with the path `app/views/welcome/index.html.erb`. A directory `/welcome` should already exist, it was generated when the welcome controller was generated (thanks rails!). Inside of there add the file `index.html.erb` and inside of the file add some HMTL:
+
+`app/views/welcome/index.html.erb`
+
+```html
+<h1>Welcome to the Boardgames app!</h1>
+<img src="https://media2.giphy.com/media/1Be3hETov67HinhAQ8/giphy.gif" alt="alex trebek">
+```
 
 ### More actions
 
@@ -383,6 +383,12 @@ resources :boardgames, only: [:index, :show]
 
 We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
 
+Then, set up the boardgame controller:
+
+```
+$ rails generate boardgames controller
+```
+
 ## Views
 
 The Controller is responsible for handling requests in Rails, though it normally hands off any heavy code to the Model. However, when it's time to send a response back to the user, the Controller hands things off to the View.
@@ -393,16 +399,23 @@ The Controller is responsible for handling requests in Rails, though it normally
 
 ```html
 <h1>Welcome to the Boardgames app!</h1>
+<img src="https://media2.giphy.com/media/1Be3hETov67HinhAQ8/giphy.gif" alt="alex trebek">
 ```
 Now refresh your browser. What happened?
 
 #### WTF?! I didn't render anything in my controller action! How did that work?
 
-Another prime example of 'convention over configuration'! We have a WelcomeController with an `index` action defined in `app/controllers`. We have a `app/views/welcome/` directory. In there we have an `index.html.erb`. This is how Rails likes things.
+Another prime example of 'convention over configuration'! We have a WelcomeController with an `index` action defined in `app/controllers`. We have a `app/views/welcome/` directory. In there we have an `index.html.erb`. The default behavior of a controller's index function is to render the index template.
 
-If you don't call render in your controller action, it will call it for you automagically. It doesn't need you to tell it where the view template is if you put it where it expects and name it after your controller action. It just works.
+If you don't call render in your controller action, it will call it for you automagically. It doesn't need you to tell it where the view template is if you put it where it expects and name it after your controller action. However, if you want to be more explicit, you can make our controller better by adding the render function with the argument index, indicating that's the template we want to render:
 
-Of course, if you wanted to render a different template, you could do it explicitly in your controller action. ie:
+```ruby
+def index
+  render :index
+end
+```
+
+Of course, if you wanted to render a different template, you could do it explicitly in your controller action:
 
 ```ruby
 def index
@@ -410,15 +423,17 @@ def index
 end
 ```
 
-would render the `app/views/welcome/something_else.html.erb` template.
+The above would render the `app/views/welcome/something_else.html.erb` template.
 
 #### Why don't we have to include an html boilerplate in our templates?
 
 Good question! Rails renders your templates in `layouts`. Checkout `app/views/layouts/application.html.erb`. If you add something here, it will be rendered on every page. The templates themselves are rendered through the `yield` in the body tag.
 
+This is known as server-side templating. This enables Rails to serve up dynamic views based on the data it is served.
+
 ### Side Note
 
-You don't have to render ERB templates in your routes! You can send back json data.
+You don't have to render ERB (embedded ruby) templates in your routes! You can send back json data.
 
 In the index method of `welcome_controller.rb`, add this line:
 
