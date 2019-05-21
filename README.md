@@ -4,18 +4,19 @@
 
 ### Learning Objectives
 
-- Revisit the MVC (Model - View - Controller) pattern
+- Revisit the MVC (Model - View - Controller) architecture
+- Distinguish between Express and Rails
 - Dive into the distiction between "convention over configuration" 
 - Explore the file structure of a Rails app
 - Build a Rails app
 
 ## What is Ruby on Rails?
 
-Rails is an **MVC framework** for Ruby.
-
-That means it performs a lot of the same functionality as Express: It provides a way for a database to tak to the browser, and controls what happens in the middle.
+Rails is an **MVC framework** for the Ruby language. That means it performs a lot of the same functionality as Express: It provides a way for the database to talk to the browser, and controls what happens in the middle.
 
 ### Express vs Rails
+
+Let's take a look at the main differences between Express and Rails.
 
 ###### Ruby on Rails
 
@@ -33,28 +34,38 @@ That means it performs a lot of the same functionality as Express: It provides a
 | Made for handling asynchronous requests            | Express requires more lines of code than the same action in Rails      |
 
 
-### Convention Over Configuration
+### Rails Philosophy
 
-Many other frameworks, like Express, give you a lot of flexibility. You can put folders wherever you want, create your own naming conventions, come up with your own best practices, etc. Rails is different.
+##### Don't Repeat Yourself
 
-In Rails, we adopt a philosophy of *convention over configuration*. This means that there is a standard *rails way* of doing things - how your file structrue should be organized, how things should be named, etc. This has many added benefits:
+According to the [Rails Guides](https://guides.rubyonrails.org/getting_started.html), "every piece of knowledge must have a single, unambiguous, authoritative representation within a system." By not writing the same information over and over again, our code is more maintainable, more extensible, and less buggy.
+
+For example, in Rails, with ActiveRecord (an ORM similar to Sequelize), once a model is specified, you don’t need to specify database column names –they’re determined from the model.
+
+##### Convention over Configuration
+
+Many other frameworks, like Express, give you a lot of flexibility. You can put folders wherever you want, create your own naming conventions, come up with your own best practices; however, Rails is different.
+
+In Rails, we adopt a philosophy of *convention over configuration*. This means that there is a standard *rails way* of doing things - how your file structrue should be organized, how things should be named. This has many added benefits:
 
 1. Once you learn the Rails way, you no longer have to think about how to organize your application code. This frees up all of your decision making time and energy to work on actual feature development.
 2. Rails has been around for a **long** time. The "Rails way" is the result of over a decade of careful consideration and refactoring by thousands of people. The result is an extremely cohesive framework which prioritizes efficiency and developer happiness. Once you get the hang of it, you'll begin to appreciate how elegent Rails actually is.
 
-### The Rails Way is the Right Way
+##### The 'Rails Way' is the Right Way
 
 Don't try to go against the grain in Rails. Follow the conventions, and things will just work. Go against them, and you will hate your life.
 
-### Is That a Metaphor? -- Rails Restaurant
+##### Is That a Metaphor? -- Rails Restaurant
 
-The client is a customer eating in the restaurant, rails is the kitchen, the request is the food ordered, the router is the waiter, the controller is a chef, the model is a recipe, the database is the giant walk-in refrigerator with ingredients, the view is plating the dish to look pretty, the response with a file is a waiter finally serving the dish to the customer.
+![](https://media.giphy.com/media/l41lQKzFg8T8p7oas/giphy.gif)
+
+The _client_ is a customer eating in the restaurant, _Rails_ is the kitchen, the _request_ is the food ordered, the _router_ is the waiter, the _controller_ is a chef, the _model_ is a recipe, the _database_ is the giant walk-in refrigerator with ingredients, the _view_ is plating the dish to look pretty, the _response_ with a file is a waiter finally serving the dish to the customer.
 
 ## Your new Bible
 
 One of the amazing things about Rails is that the community is **SUPERB** when it comes to documentation.
 
-The [Ruby on Rails Guides](http://guides.rubyonrails.org/) is the defacto resource for all those getting into Rails, as well as seasoned pros. It is extensive, comprehensive, and easy to read. I highly recommend you read it all the way through, and continue to consult with it as you progress along your Rails journey.
+The [Ruby on Rails Guides](http://guides.rubyonrails.org/) is the defacto resource for all those getting into Rails, as well as seasoned pros. It is extensive, comprehensive, and easy to read. I highly recommend you read it all the way through, and continue to consult it as you progress through your Rails journey.
 
 The [Getting Started Guide](http://guides.rubyonrails.org/getting_started.html) can't be beat. If you do the whole thing and take your time, Rails should start to become very intuitive for you.
 
@@ -77,29 +88,42 @@ gem install rails
 ```
 and you will get the latest automatically.
 
-### rails new
+### Generating an application
 
-To create a Rails app, we use the `rails new` command. This sets us up with our skeleton Rails app. There are a lot of options that you can provide with the `rails new` command. Try `rails new --help` to take a look at them all.
-
-For this example, we're going to run `rails new` with the `-G` flag. This stops the `rails new` command from initializing a new Git repository, because as we all know, **we never initialize a repo inside another repo**.
+To generate a Rails application, use the `rails` command and pass it the `new` argument and the name of the application you want to generate: `my_rails_app`. This sets us up with our skeleton Rails app. There are a lot of options that you can provide with the `rails new` command. Try `rails new --help` to take a look at them all.
 
 ```
-rails new my_rails_app -d postgresql
+$ rails new my_rails_app
 ```
 
-Now if we `cd my_app` and type
-```
-rails server
-```
-our Rails server will start up and we can visit our rails app at localhost:3000. Check out all those happy people! We're already doing a website.
+Now if we change directory into`my_rails_app ` and type:
 
-Now run ```bundle install``` and restart your Rails server
+```
+$ rails server
+
+// you should see the following in Terminal
+=> Booting Puma
+=> Rails 5.2.3 application starting in development
+=> Run `rails server -h` for more startup options
+Puma starting in single mode...
+* Version 3.12.1 (ruby 2.6.3-p62), codename: Llamas in Pajamas
+* Min threads: 5, max threads: 5
+* Environment: development
+* Listening on tcp://localhost:3000
+Use Ctrl-C to stop
+
+```
+The Rails server will start up and we can visit the application welcome page at `localhost:3000`. You should now see the _Yay! You're on Rails!_ page. Check out all those happy people!
+
+![](https://edgeguides.rubyonrails.org/images/getting_started/rails_welcome.png)
+
+Now run ```bundle install``` and restart your Rails server.
 
 ### Rails File Structure
 
-Open up the new rails app. You'll see a file structure something like this:
+Open up the new rails application. You'll see a file structure that looks something like this:
 
-```
+```md
 .
 ├── Gemfile
 ├── Gemfile.lock
@@ -203,9 +227,9 @@ Open up the new rails app. You'll see a file structure something like this:
 └── vendor
 ```
 
-Fortunately, for the apps we do in this class, we'll only need to edit a few of these files (see below).
+Fortunately, for the applications we build in this class, we'll only need to edit a few of these files (see below).
 
-```
+```md
 .
 ├── Gemfile
 ├── app
@@ -227,11 +251,7 @@ Fortunately, for the apps we do in this class, we'll only need to edit a few of 
 
 That looks much more manageable, doesn't it?
 
-> Note: This doesn't mean you can delete all the extras, of course. You know that. Just making sure.
-
-# Let's talk about the M in MVC
-
-A model is used to retrieve information from the database.
+> Note: This doesn't mean you can delete all the extra files, of course. You know that, right? Just making sure.
 
 ## Routing in Rails (20 mins)
 
@@ -258,8 +278,6 @@ As a reminder, MVC is a pattern defining a web app in three parts:
 
 ```
 
-When a user makes a request to the browser, the web-application needs to know what content to show.
-
 Let's try to visit a new page in our app. Type `localhost:3000/welcome` into your browser's url bar. What error do you see?
 
 In Rails, we need to define the routes of our application in our routes file. Edit you `config/routes.rb` file to look like this:
@@ -273,12 +291,20 @@ end
 This tells our Rails app that we are defining a GET route named `/welcome`. If we go to terminal and type:
 
 ```
-rails routes
+$ rails routes
 ```
 
-...we will see a list of all of the routes that are defined in our `config/routes.rb` file.
+we will see a list of all of the routes that are defined in our `config/routes.rb` file.
+
+| Prefix       | Verb         | URI Pattern       | Controller#Action  |
+|:------------ |:------------ |:------------------|:------------------ |
+| welcome      | GET          | /welcome(.:format)| welcome#index
 
 Now go back to the browser and refresh the page. You should see a different error. This error is telling us that we do not have a `WelcomeController` class definied in our app.
+
+```
+Routing Error: uninitialized constant WelcomeController
+```
 
 This is coming from the second argument we provide to the `get` method in our routes file. The first argument is the name of the route (`/welcome`) and the second argument (`to: 'welcome#index'`) is indicating **where** we want requests that are sent to that route to go. In Rails, the router does not do anything with the requests, it only passes them to the controllers. The controllers then handle the requests and send the responses back to the client.
 
@@ -288,84 +314,87 @@ The controllers in a Rails application handle the requests and send responses. C
 
 In our app, we have stated that requests to the **GET** `/welcome` route should be handled by the WelcomeController, specifically the `index` action within the WelcomeController. So let's create one!
 
-- Add a file called `welcome_controller.rb` to you `app/controllers` directory.
+- Add a file called `welcome_controller.rb` to the `app/controllers` directory.
 - Edit your `welcome_controller.rb` file to look like this:
 
 ```ruby
 class WelcomeController < ApplicationController
   def index
     # says we want to send back plain text
-    render plain: "Welcome!"
+    render plain: "Welcome to Unit 4, Jeopardy!"
   end
 end
 ```
 
-Now when your refresh the page you should see the `Welcome!` text.
+Now when your refresh the page you should see the `Welcome to Unit 4, Jeopardy!` text.
 
 ### More actions
 
-We have a `get` route in our app that works super well! But if we're trying to build a CRUD app, we need to do more, right? 
+We have a simple `get` route in our app that works super well! But if we're trying to build a CRUD app, we need to do more, right? 
 
 - How might we declare other HTTP verbs in our routes?
-- Compare the routes we've made so far to your garden variety Express router. How does it differ? How is it the same?
 
-```js
-quoteRoutes.get('/', quotesController.index);
-quoteRoutes.get('/edit/:id', quotesController.edit);
-quoteRoutes.get('/:id', quotesController.show);
-quoteRoutes.post('/', quotesController.create);
-quoteRoutes.put('/:id', quotesController.update);
-quoteRoutes.delete('/:id', quotesController.destroy);
-```
+### Resource Routing
 
-### `resources :thing`
+Collections of similar objects in Rails are referred to as _resources_. Resource routing allows you to quickly declare **all** of the common routes for a given controller. Instead of declaring separate routes for your _index_, _show_, _new_, _edit_, _create_, _update_ and _destroy_ actions, a resourceful route declares them in a single line of code.
 
-Rails also allows us to write these routes with just one line.
+Add the following to the `config/routes.rb`:
 
-Add this to `config/routes.rb`:
-
-```rb
-resources :dinos
+```ruby
+resources :boardgames
 ```
 
 Then run `rails routes` again. What do you notice?
 
-## 🚀 WE DO: More Controllers
+| Prefix         | Verb     | URI Pattern                   | Controller#Action     |
+|:------------   |:-------- |:------------------------------|:--------------------- |
+| boardgames     | GET      | /boardgames(.:format)         | boardgames#index      |
+|                | POST     | /boardgames(.:format)         | boardgames#create     |
+| new_boardgame  | GET      | /boardgames/new(.:format)     | boardgames#new        |
+| edit_boardgame | GET      | /boardgames/:id/edit(.:format)| boardgames#edit       |
+| boardgame      | GET      | /boardgames/:id(.:format)     | boardgames#show       |
+|                | PATCH    | /boardgames/:id(.:format)     | boardgames#update     |
+|                | PUT      | /boardgames/:id(.:format)     | boardgames#update     |
+|                | DELETE   | /boardgames/:id(.:format)     | boardgames#destroy    |
 
-For this code-together, we're going to add another controller.
+### 🚀 WE DO: More Controllers
 
-So far, our dino app has:
-- A `welcome` route that displays the text `hello world`
+For this code-along, we're going to add another controller.
+
+So far, our boardgame application has:
+- A `welcome` route that displays the text `Welcome to Unit 4, Jeopardy!`
 - A `welcome_controller.rb` file
-- Dino resources
+- Boardgames resources
 
-Together, we'll
-- Create a dino controller
-- When we hit the `/dinos` endpoint, send back the text "dinosaurs are cool"
-- When we hit the `/dinos/:dinosaur` endpoint, send back the text "[dinosaur] is cool"
-- Hint: We're going to have to get the dino from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters)
+Together, we will:
 
-For this lecture, we're only concerned about the `/dinos` and `/dinos/:dinosaur` endpoints ... those are going to be the methods `index` and `show`. 
+- Create a boardgames_controller
+- When we hit the `/boardgames` endpoint, send back the text "boardgames are cool"
+- When we hit the `/boardgames/:boardgame` endpoint, send back the text "[boardgame] is the best game ever"
+- Hint: We're going to have to get the boardgame from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters)
+
+For this lecture, we're only concerned about the `/boardgames` and `/boardgames/:boardgame` endpoints; those are going to be the methods `index` and `show`. 
 
 We can set this up in our route by saying:
 
 ```rb
-resources :dinos, only: [:index, :show]
+resources :boardgames, only: [:index, :show]
 ```
 
 We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
 
-# Views
+## Views
 
-This is pretty cool but what if we want to render more than just text?
+The Controller is responsible for handling requests in Rails, though it normally hands off any heavy code to the Model. However, when it's time to send a response back to the user, the Controller hands things off to the View.
 
 - First we'll start with the `index` action in our WelcomeController. Remove the render line (your index method will be empty).
 - Visit `localhost:3000/welcome` in your browser. What error do you see?
-- In your `app/views` directory, create a `welcome` folder. Inside of that create a `index.html.erb` file. Fill it with this:
+- In your `app/views` directory, create a `welcome` folder. Inside of that create an `index.html.erb` file. Fill it with the following HTML:
+
 ```html
-<h1>Welcome!</h1>
+<h1>Welcome to the Boardgames app!</h1>
 ```
-- Now refresh your browser.
+Now refresh your browser. What happened?
 
 #### WTF?! I didn't render anything in my controller action! How did that work?
 
@@ -399,22 +428,23 @@ render json: { hello: "world" }
 
 Cool, right? Sort of like `res.json`.
 
-## 🚀 WE DO: The Return of the Clowns
+### 🚀 WE DO: The Return of the Clowns
 
-Add the remaining views for the `dinos` controller actions. To make the `dinosaur` available, you are going to have to set it to an instance variable in your controller action.
+Add the remaining views for the `boardgames` controller actions. To make the `boardgame` available, you are going to have to set it to an instance variable in your controller action.
 
-Then in your template, you will have access to that instance variable. Good news! The default template compiler for Rails applications, ERB, has the **exact same syntax** as EJS (yes, we did that on purpose).
+Then in your template, you will have access to that instance variable.
 
 ### Route Helpers
 
-Another godly thing about Rails is that it provides your with url helper methods so that you don't have to remember every every route in your app. Add the following line to your `app/views/welcome/index.html.erb` template:
+Another thing about Rails is that it provides you with `url helper methods` so that you don't have to remember every route in your app. Add the following line to your `app/views/welcome/index.html.erb` template:
 
 ```html
-<%= link_to "Dinosaurs", dinos_path %>
+<%= link_to "Boardgames", boardgames_path %>
 ```
 There are two magics going on here -
-1. `link_to` is a method available in Rails views that create anchor tags. The first argument is the text that will be displayed in the link. The second is the href for the link.
-2. `dinos_path` is a url helper method that returns the about path, or rather, the path that will resolve to the dinosaur route defined in our routes controller.
+
+1. `link_to` is a method available in Rails views that creates anchor tags. The first argument is the text that will be displayed in the link. The second is the `href` for the link.
+2. `boardgames_path` is a `url helper` method that returns the about path, or rather, the path that will resolve to the boardgame route defined in our routes controller.
 
 
 
