@@ -1,21 +1,39 @@
-# Ruby on Rails!
+# Ruby on Rails
 
-![freddie](./assets/freddie.jpg)
+![rails](https://cdn-images-1.medium.com/max/1200/1*iIiiKaJKg8k9aRU8iWxCxA.jpeg)
 
 ### Learning Objectives
 
-- Revisit the MVC pattern
-- Dive into the "convention vs configuration" distinction a little more deeply
+- Revisit the MVC (Model - View - Controller) pattern
+- Dive into the distiction between "convention over configuration" 
 - Explore the file structure of a Rails app
-- Build a Rails app about dinosaurs!
+- Build a Rails app
 
-# What is Ruby on Rails?
+## What is Ruby on Rails?
 
 Rails is an **MVC framework** for Ruby.
 
 That means it performs a lot of the same functionality as Express: It provides a way for a database to tak to the browser, and controls what happens in the middle.
 
-# Convention over configuration
+### Express vs Rails
+
+###### Ruby on Rails
+
+| Pros               | Cons               |
+|:------------------ |:------------------ |
+| Large development community with great documentation           | Heavier and more demanding of resources which can lead to slower response times |
+| It's relatively quick to build things because of all the built in generators            | Harder to scale so not the best choice for super interactive websites      |
+| Readability – in theory you can open up anyone’s Rails project and easily find your way around      | Too much magic happening under the hood      |
+
+###### Express
+
+| Pros               | Cons               |
+|:------------------ |:------------------ |
+| Lightweight and great for building larger projects that will need to scale           | It can be harder to figure out where things are happening |
+| Made for handling asynchronous requests            | Express requires more lines of code than the same action in Rails      |
+
+
+### Convention Over Configuration
 
 Many other frameworks, like Express, give you a lot of flexibility. You can put folders wherever you want, create your own naming conventions, come up with your own best practices, etc. Rails is different.
 
@@ -24,13 +42,17 @@ In Rails, we adopt a philosophy of *convention over configuration*. This means t
 1. Once you learn the Rails way, you no longer have to think about how to organize your application code. This frees up all of your decision making time and energy to work on actual feature development.
 2. Rails has been around for a **long** time. The "Rails way" is the result of over a decade of careful consideration and refactoring by thousands of people. The result is an extremely cohesive framework which prioritizes efficiency and developer happiness. Once you get the hang of it, you'll begin to appreciate how elegent Rails actually is.
 
-### The Rails way is the right way!
+### The Rails Way is the Right Way
 
 Don't try to go against the grain in Rails. Follow the conventions, and things will just work. Go against them, and you will hate your life.
 
+### Is That a Metaphor? -- Rails Restaurant
+
+The client is a customer eating in the restaurant, rails is the kitchen, the request is the food ordered, the router is the waiter, the controller is a chef, the model is a recipe, the database is the giant walk-in refrigerator with ingredients, the view is plating the dish to look pretty, the response with a file is a waiter finally serving the dish to the customer.
+
 ## Your new Bible
 
-One of the amazing things about Rails (of which there are many) is that the community is **SUPERB** when it comes to documentation.
+One of the amazing things about Rails is that the community is **SUPERB** when it comes to documentation.
 
 The [Ruby on Rails Guides](http://guides.rubyonrails.org/) is the defacto resource for all those getting into Rails, as well as seasoned pros. It is extensive, comprehensive, and easy to read. I highly recommend you read it all the way through, and continue to consult with it as you progress along your Rails journey.
 
@@ -62,7 +84,7 @@ To create a Rails app, we use the `rails new` command. This sets us up with our 
 For this example, we're going to run `rails new` with the `-G` flag. This stops the `rails new` command from initializing a new Git repository, because as we all know, **we never initialize a repo inside another repo**.
 
 ```
-rails new my_app -G
+rails new my_rails_app -d postgresql
 ```
 
 Now if we `cd my_app` and type
@@ -71,23 +93,11 @@ rails server
 ```
 our Rails server will start up and we can visit our rails app at localhost:3000. Check out all those happy people! We're already doing a website.
 
-If your Rails app is broken change, got to your Gemfile and change 
-```
-gem 'sqlite3'
-``` 
-to 
-
-```
-gem 'sqlite3', '~> 1.3.6'
-```
-
-This is an adapter for sqlite3.
-
 Now run ```bundle install``` and restart your Rails server
 
-### What are all those files???!?!?!?
+### Rails File Structure
 
-Let's tak about this huge ass file structure! Open up the new rails app. You'll see a file structure something like this:
+Open up the new rails app. You'll see a file structure something like this:
 
 ```
 .
@@ -193,9 +203,7 @@ Let's tak about this huge ass file structure! Open up the new rails app. You'll 
 └── vendor
 ```
 
-YIKES!!!!
-
-Fortunately, for the apps we do in this class, we'll only need to edit a few of these files...
+Fortunately, for the apps we do in this class, we'll only need to edit a few of these files (see below).
 
 ```
 .
@@ -203,32 +211,39 @@ Fortunately, for the apps we do in this class, we'll only need to edit a few of 
 ├── app
 │   ├── controllers
 │   │   ├── application_controller.rb
-│   │   └── we're gonna add more stuff ehre
+│   │   └── we're going to add more files here
 │   ├── models
-│   │   └── application_record.rb (we aren't gonna touch this today)
+│   │   └── application_record.rb (we won't touch this file today)
 │   └── views
 │       └── layouts
 │           └── application.html.erb
-│       └── we're gonna add more stuff here
+│       └── we're going to add more files here
 ├── config
 │   └── routes.rb
 └── db
     └── seeds.rb
-    └── eventually there's going to be more stuff down here but! not today
+    └── eventually there will be more files here
 ```
 
 That looks much more manageable, doesn't it?
 
-(This doesn't mean you can delete all the extras, of course. You know that. I just wanted to make sure.)
+> Note: This doesn't mean you can delete all the extras, of course. You know that. Just making sure.
 
-# Let's talk about the (M)VC!
+# Let's talk about the M in MVC
 
-## Intro - Routing in Rails (20 mins)
+A model is used to retrieve information from the database.
+
+## Routing in Rails (20 mins)
+
+The router is the doorman of your application.
+
+The Router is basically just a matching service. It looks at the HTTP verb (GET, POST, PUT, DELETE) and the URL that is being requested and matches it with the appropriate controller action to run. If it can't find the route, it will throw an error.
 
 As a reminder, MVC is a pattern defining a web app in three parts:
-* The (M)odels, holding all the business logic
-* The (V)iews, rendering the database content as a readable format
-* The (C)ontrollers, linking views and models
+
+* **M**odels, holding all the business logic
+* **V**iews, rendering the database content as a readable format
+* **C**ontrollers, linking views and models
 
 ```
 
@@ -243,7 +258,7 @@ As a reminder, MVC is a pattern defining a web app in three parts:
 
 ```
 
-When a user makes a request to the browser, the web-application needs to know what content to show them.
+When a user makes a request to the browser, the web-application needs to know what content to show.
 
 Let's try to visit a new page in our app. Type `localhost:3000/welcome` into your browser's url bar. What error do you see?
 
@@ -315,7 +330,7 @@ resources :dinos
 
 Then run `rails routes` again. What do you notice?
 
-## 🚀 LET'S DO TOGETHER: More controllers!
+## 🚀 WE DO: More Controllers
 
 For this code-together, we're going to add another controller.
 
@@ -340,7 +355,7 @@ resources :dinos, only: [:index, :show]
 
 We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
 
-# Views!!!!!!
+# Views
 
 This is pretty cool but what if we want to render more than just text?
 
@@ -372,7 +387,7 @@ would render the `app/views/welcome/something_else.html.erb` template.
 
 Good question! Rails renders your templates in `layouts`. Checkout `app/views/layouts/application.html.erb`. If you add something here, it will be rendered on every page. The templates themselves are rendered through the `yield` in the body tag.
 
-### Side note!!!
+### Side Note
 
 You don't have to render ERB templates in your routes! You can send back json data.
 
@@ -384,7 +399,7 @@ render json: { hello: "world" }
 
 Cool, right? Sort of like `res.json`.
 
-## 🚀 LET'S DO TOGETHER: The Return of the Clowns
+## 🚀 WE DO: The Return of the Clowns
 
 Add the remaining views for the `dinos` controller actions. To make the `dinosaur` available, you are going to have to set it to an instance variable in your controller action.
 
