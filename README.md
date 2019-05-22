@@ -381,7 +381,7 @@ We'll get to `new`, `create`, `edit`, `update`, and `destroy` later.
 Then, set up the boardgame controller:
 
 ```
-$ rails generate boardgames controller
+$ rails generate controller boardgames
 ```
 
 ## Views
