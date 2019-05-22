@@ -69,6 +69,10 @@ The [Ruby on Rails Guides](http://guides.rubyonrails.org/) is the defacto resour
 
 The [Getting Started Guide](http://guides.rubyonrails.org/getting_started.html) can't be beat. If you do the whole thing and take your time, Rails should start to become very intuitive for you.
 
+## All About Rails
+
+For further reading on the Rails framework, see these [additional resources](further-reading.md).
+
 # Our first Rails app
 
 ### Generating an application
