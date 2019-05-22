@@ -16,7 +16,7 @@ Ruby is a programming language. Rails is a web framework. The Ruby on Rails fram
 
 ##### Rails MVC Architecture
 
-![](http://womenwhocode.ru/wp-content/uploads/2017/03/rails-mvc-request-response-cycle.jpg)
+![mvc](http://womenwhocode.ru/wp-content/uploads/2017/03/rails-mvc-request-response-cycle.jpg)
 
 - Model refers to the data objects that we use.
 - View is the presentation layer. It's what the user sees and interacts with. The HTML, CSS and JavaScript
