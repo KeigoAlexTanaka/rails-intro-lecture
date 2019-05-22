@@ -317,9 +317,9 @@ class WelcomeController < ApplicationController
   end
 end
 ```
-Now when you refresh the page, you should see the `Welcome to Unit 4, Jeopardy!` text. However, if you comment out that text, what do you see?
+Now when you refresh the page, you should see the `Welcome to Unit 4, Jeopardy!` text. However, if you comment out that line of code, what do you see?
 
-Another error! *Missing template welcome/index...* Since we have a welcome controller and an index method, Rails automatically will try to render a view with the path `app/views/welcome/index.html.erb`. A directory `/welcome` should already exist, it was generated when the welcome controller was generated (thanks rails!). Inside of there add the file `index.html.erb` and inside of the file add some HMTL:
+Another error! *Missing template welcome/index...* Since we have a welcome controller and an index method, Rails automatically will try to render a view with the path `app/views/welcome/index.html.erb`. A directory `/welcome` should already exist, it was generated when the welcome controller was generated (Thanks, Rails!). Inside of there add the file `index.html.erb` and inside of the file add some HMTL:
 
 `app/views/welcome/index.html.erb`
 
@@ -359,16 +359,16 @@ Then run `rails routes` again. What do you notice?
 
 ### 🚀 WE DO: More Controllers
 
-For this code-along, we're going to add another controller.
+For this code-along, we're going to add yet another controller, called `boardgames`.
 
-So far, our boardgame application has:
+So far, our application has:
 - A `welcome` route that displays the text `Welcome to Unit 4, Jeopardy!`
 - A `welcome_controller.rb` file
-- Boardgames resources
+- A boardgames resource
 
 Together, we will:
 
-- Create a boardgames_controller
+- Create a boardgames controller
 - When we hit the `/boardgames` endpoint, send back the text "boardgames are cool"
 - When we hit the `/boardgames/:boardgame` endpoint, send back the text "[boardgame] is the best game ever"
 - Hint: We're going to have to get the boardgame from the [`params` object](http://guides.rubyonrails.org/action_controller_overview.html#parameters)
@@ -405,9 +405,9 @@ Now refresh your browser. What happened?
 
 #### WTF?! I didn't render anything in my controller action! How did that work?
 
-Another prime example of 'convention over configuration'! We have a WelcomeController with an `index` action defined in `app/controllers`. We have a `app/views/welcome/` directory. In there we have an `index.html.erb`. The default behavior of a controller's index function is to render the index template.
+THis is another of Rails' prime examples of 'convention over configuration'! We have a WelcomeController with an `index` action defined in `app/controllers`. We have a `app/views/welcome/` directory. In there we have an `index.html.erb`. The default behavior of a controller's index function is to render the index template.
 
-If you don't call render in your controller action, it will call it for you automagically. It doesn't need you to tell it where the view template is if you put it where it expects and name it after your controller action. However, if you want to be more explicit, you can make our controller better by adding the render function with the argument index, indicating that's the template we want to render:
+If you don't call render in your controller action, it will call it for you automagically. It doesn't need you to tell it where the view template is if you put it where it expects and name it after your controller action. However, if you want to be more explicit, you can make the controller better by adding the render function with the argument index, indicating that's the template we want to render:
 
 ```ruby
 def index
@@ -429,9 +429,29 @@ The above would render the `app/views/welcome/something_else.html.erb` template.
 
 Good question! Rails renders your templates in `layouts`. Checkout `app/views/layouts/application.html.erb`. If you add something here, it will be rendered on every page. The templates themselves are rendered through the `yield` in the body tag.
 
-This is known as server-side templating. This enables Rails to serve up dynamic views based on the data it is served.
+### Passing Data to the View
 
-### Side Note
+##### ERB
+
+`.html.erb` files are templates that are processed with embedded ruby, `.erb` to generate an `.html` file. This is known as server-side templating. This enables Rails to serve up dynamic views based on the data it is served. Let's say we want to pass a boardgame from the controller to its view. How would we go about that?
+
+1. We'd add an array of boardgames to the index action:
+```
+@boardgames = ['Monopoly', 'Scrabble', 'Risk', 'Candyland', 'Snakes and Ladders']
+```
+2. Then, we'd pass the boardgames instance to the index view:
+```
+<h3> <%=@boardgames[1]%> </h3>
+```
+What's happening here? Ruby is being evaluated first and the result is printed into our html. The <% %> symbols escape our html. 
+
+There are many varieties of `<% %>`:
+
+- `<% %>` **will evaluate the code**. It does not leave behind any content on the html template once it's rendered.
+
+- `<%= %>` **will interpolate the result**. That is, it will insert the output into the html document.
+
+##### JSON
 
 You don't have to render ERB (embedded ruby) templates in your routes! You can send back json data.
 
@@ -454,12 +474,18 @@ Then in your template, you will have access to that instance variable.
 Another thing about Rails is that it provides you with `url helper methods` so that you don't have to remember every route in your app. Add the following line to your `app/views/welcome/index.html.erb` template:
 
 ```html
-<%= link_to "Boardgames", boardgames_path %>
+<%= link_to "List of All the Boardgames", boardgames_path %>
 ```
 There are two magics going on here -
 
 1. `link_to` is a method available in Rails views that creates anchor tags. The first argument is the text that will be displayed in the link. The second is the `href` for the link.
 2. `boardgames_path` is a `url helper` method that returns the about path, or rather, the path that will resolve to the boardgame route defined in our routes controller.
 
+## Challenge
 
-
+- Create a new route: `/about` that with a GET request will hit the controller#action welcome#about.
+- Have `welcome#about` controller action render a view in `welcome/about.html.erb`
+- Set a variable equal to your favorite computing language in your welcome#about controller, have that variable passed into the view.
+- Your view should now display your favorite computing language, e.g. Java, Rust, TypeScript, Kotlin, C.
+- Create an array of your favorite languages in your controller. Pass them into your view and put each of them inside its own `<li>` tag. For example:`<li><%=@languages[0]%></li>`
+- Now instead of accessing each element by index, loop over your languages array and display each language.
