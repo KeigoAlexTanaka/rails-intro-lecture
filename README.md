@@ -12,7 +12,15 @@
 
 ## What is Ruby on Rails?
 
-Rails is an **MVC framework** for the Ruby language. That means it performs a lot of the same functionality as Express: It provides a way for the database to talk to the browser, and controls what happens in the middle.
+Ruby is a programming language. Rails is a web framework. The Ruby on Rails framework uses an **MVC architecture**. It is a fundamental part of how the framework is structured. It performs a lot of the same functionality as Express: It provides a way for the database to talk to the browser, and controls what happens in the middle.
+
+##### Rails MVC Architecture
+
+![MVC Architecture](http://womenwhocode.ru/wp-content/uploads/2017/03/rails-mvc-request-response-cycle.jpg)
+
+- Model refers to the data objects that we use.
+- View is the presentation layer. It's what the user sees and interacts with. The HTML, CSS and JavaScript
+- Controller processes and responds to user events, such as clicking on links and submitting forms.
 
 ### Express vs Rails
 
@@ -250,32 +258,15 @@ That looks much more manageable, doesn't it?
 
 The Router is basically just a matching service. It looks at the HTTP verb (GET, POST, PUT, DELETE) and the URL that is being requested and matches it with the appropriate controller action to run. If it can't find the route, it will throw an error.
 
-As a reminder, MVC is a pattern defining a web app in three parts:
-
-* **M**odels, holding all the business logic
-* **V**iews, rendering the database content as a readable format
-* **C**ontrollers, linking views and models
-
-```
-
-                                          -----> Model <----> DB
-                                         |         |
-            response        request      |         |
-   Browser <-------- router -------> controller <--
-                             GET         ^
-                             PUT         |
-                             POST         -----> view <----> html/images/css/js
-                             DELETE
-
-```
-
 Let's try to visit a new page in our app. Type `localhost:3000/welcome` into your browser's url bar. What error do you see?
 
-In Rails, we need to define the routes of our application in our routes file. Edit you `config/routes.rb` file to look like this:
+In Rails, we need to define the routes of our application in our routes file. Edit the `config/routes.rb` file to look like the following:
 
 ```ruby
 Rails.application.routes.draw do
+
   get "/welcome", to: "welcome#index"
+
 end
 ```
 
